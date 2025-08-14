@@ -38,7 +38,7 @@ export default function Home() {
       const response = await fetch('/api/posts?limit=12');
       if (response.ok) {
         const data = await response.json();
-        setPosts(data.posts);
+        setPosts(data.posts || []);
       } else {
         setError('Failed to load posts');
       }
@@ -106,66 +106,186 @@ export default function Home() {
     }
   };
 
+  // Enhanced animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1
+        staggerChildren: 0.15,
+        delayChildren: 0.2
       }
     }
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1 }
+    hidden: { y: 40, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.25, 0.25, 0.25, 0.75]
+      }
+    }
+  };
+
+  const heroTitleVariants = {
+    hidden: { 
+      y: 100, 
+      opacity: 0,
+      scale: 0.8
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 1.2,
+        ease: [0.16, 1, 0.3, 1],
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const letterVariants = {
+    hidden: { y: 50, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5
+      }
+    }
+  };
+
+  const galleryItemVariants = {
+    hidden: { 
+      y: 60, 
+      opacity: 0, 
+      scale: 0.8,
+      rotateY: 15
+    },
+    visible: { 
+      y: 0, 
+      opacity: 1, 
+      scale: 1,
+      rotateY: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.25, 0.25, 0.25, 0.75]
+      }
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-pink-50 to-rose-100 pb-20 sm:pb-0">
       <Header />
       
-      {/* Hero Section */}
+      {/* Enhanced Hero Section */}
       <motion.div 
-        className="relative overflow-hidden"
+        className="relative overflow-hidden min-h-[90vh] flex items-center"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
       >
-        {/* Background decoration */}
+        {/* Enhanced Background decoration */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div 
-            className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-pink-200 to-rose-300 rounded-full opacity-20 blur-3xl"
+            className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-pink-200 to-rose-300 rounded-full opacity-30 blur-3xl"
+            initial={{ scale: 0, rotate: 0 }}
             animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 180, 360],
               y: [-10, 10, -10]
             }}
             transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: [0.4, 0.0, 0.6, 1.0]
+              scale: { duration: 8, repeat: Infinity, ease: "easeInOut" },
+              rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+              y: { duration: 6, repeat: Infinity, ease: [0.4, 0.0, 0.6, 1.0] }
             }}
           />
           <motion.div 
-            className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-pink-100 to-rose-200 rounded-full opacity-20 blur-3xl"
+            className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-pink-100 to-rose-200 rounded-full opacity-25 blur-3xl"
+            initial={{ scale: 0, rotate: 0 }}
             animate={{
+              scale: [1.2, 1, 1.2],
+              rotate: [360, 180, 0],
               y: [10, -10, 10]
             }}
             transition={{
-              duration: 8,
+              scale: { duration: 10, repeat: Infinity, ease: "easeInOut" },
+              rotate: { duration: 25, repeat: Infinity, ease: "linear" },
+              y: { duration: 8, repeat: Infinity, ease: [0.4, 0.0, 0.6, 1.0], delay: 2 }
+            }}
+          />
+          
+          {/* Additional floating elements */}
+          <motion.div 
+            className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-br from-rose-200 to-pink-300 rounded-full opacity-20 blur-2xl"
+            animate={{
+              x: [0, 50, 0],
+              y: [0, -30, 0],
+              scale: [1, 1.3, 1]
+            }}
+            transition={{
+              duration: 12,
               repeat: Infinity,
-              ease: [0.4, 0.0, 0.6, 1.0],
-              delay: 2
+              ease: "easeInOut",
+              delay: 1
+            }}
+          />
+          <motion.div 
+            className="absolute bottom-1/3 right-1/3 w-24 h-24 bg-gradient-to-br from-pink-300 to-rose-200 rounded-full opacity-15 blur-xl"
+            animate={{
+              x: [0, -40, 0],
+              y: [0, 40, 0],
+              scale: [1, 0.8, 1]
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 3
             }}
           />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="text-center">
-            <motion.div variants={itemVariants}>
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-4 sm:mb-6 leading-tight">
-                Wrina <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-rose-600">Rjilatk</span> 😍😋
-              </h1>
+            <motion.div 
+              variants={heroTitleVariants}
+              className="overflow-hidden"
+            >
+              <motion.h1 
+                className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-gray-900 mb-6 sm:mb-8 leading-tight"
+                variants={letterVariants}
+              >
+                <motion.span variants={letterVariants} className="inline-block mr-4">
+                  Wrina
+                </motion.span>
+                <motion.span 
+                  variants={letterVariants}
+                  className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 mr-4"
+                >
+                  Rjilatk
+                </motion.span>
+                <motion.span 
+                  variants={letterVariants}
+                  className="inline-block"
+                  animate={{
+                    rotate: [0, 10, -10, 0],
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    delay: 2
+                  }}
+                >
+                  😍😋
+                </motion.span>
+              </motion.h1>
             </motion.div>
             
             <motion.p 
@@ -210,170 +330,284 @@ export default function Home() {
 
 
 
-      {/* Premium Gallery Section */}
+      {/* Redesigned Premium Gallery Section */}
       <motion.div 
-        className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-white via-pink-25 to-rose-50 relative overflow-hidden"
+        className="py-20 sm:py-28 lg:py-32 relative overflow-hidden"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: "-150px" }}
         variants={containerVariants}
+        style={{
+          background: 'linear-gradient(135deg, #ffffff 0%, #fdf2f8 25%, #fce7f3 50%, #f9a8d4 75%, #ec4899 100%)',
+          backgroundSize: '400% 400%'
+        }}
       >
-        {/* Background decoration */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-10 sm:top-20 left-5 sm:left-10 w-48 sm:w-72 h-48 sm:h-72 bg-gradient-to-br from-pink-100 to-rose-200 rounded-full opacity-20 blur-3xl"></div>
-          <div className="absolute bottom-10 sm:bottom-20 right-5 sm:right-10 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-tr from-rose-100 to-pink-200 rounded-full opacity-20 blur-3xl"></div>
+        {/* Enhanced Background with animated gradients */}
+        <motion.div 
+          className="absolute inset-0"
+          animate={{
+            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          style={{
+            background: 'linear-gradient(45deg, rgba(236, 72, 153, 0.1), rgba(251, 113, 133, 0.1), rgba(236, 72, 153, 0.1))',
+            backgroundSize: '300% 300%'
+          }}
+        />
+        
+        {/* Floating decorations */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div 
+            className="absolute top-1/4 left-10 w-32 h-32 bg-gradient-to-br from-pink-200 to-rose-300 rounded-full opacity-30 blur-2xl"
+            animate={{
+              x: [0, 100, 0],
+              y: [0, -50, 0],
+              scale: [1, 1.5, 1]
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div 
+            className="absolute top-3/4 right-10 w-24 h-24 bg-gradient-to-br from-rose-200 to-pink-300 rounded-full opacity-25 blur-xl"
+            animate={{
+              x: [0, -80, 0],
+              y: [0, 60, 0],
+              scale: [1, 0.8, 1]
+            }}
+            transition={{
+              duration: 25,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 5
+            }}
+          />
+          <motion.div 
+            className="absolute top-1/2 left-1/2 w-16 h-16 bg-gradient-to-br from-pink-300 to-rose-200 rounded-full opacity-20 blur-lg"
+            animate={{
+              x: [-20, 20, -20],
+              y: [-30, 30, -30],
+              rotate: [0, 360, 0]
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 10
+            }}
+          />
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div className="text-center mb-12 sm:mb-16" variants={itemVariants}>
+          {/* Enhanced Gallery Header */}
+          <motion.div className="text-center mb-16 sm:mb-20" variants={itemVariants}>
             <motion.div
-              className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl mb-6"
-              whileHover={{ rotate: 360, scale: 1.1 }}
+              className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-pink-500 via-rose-500 to-pink-600 rounded-3xl mb-8 shadow-2xl"
+              whileHover={{ 
+                rotate: 360, 
+                scale: 1.15,
+                boxShadow: "0 25px 50px -12px rgba(236, 72, 153, 0.5)"
+              }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
+              animate={{
+                y: [0, -5, 0]
+              }}
+              style={{
+                animationDuration: "3s",
+                animationIterationCount: "infinite"
+              }}
             >
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </motion.div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-              Premium <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-rose-600">Gallery</span>
-            </h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
-              Explore exquisite artistry from our most talented creators. Each piece tells a unique story of beauty and elegance.
-            </p>
+            
+            <motion.h2 
+              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 sm:mb-8"
+              variants={heroTitleVariants}
+            >
+              <motion.span variants={letterVariants} className="inline-block">
+                Premium
+              </motion.span>{' '}
+              <motion.span 
+                variants={letterVariants}
+                className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-rose-500 to-pink-700"
+              >
+                Gallery
+              </motion.span>
+            </motion.h2>
+            
+            <motion.p 
+              className="text-xl sm:text-2xl text-gray-700 max-w-4xl mx-auto mb-10 sm:mb-12 px-4 leading-relaxed"
+              variants={itemVariants}
+            >
+              Discover breathtaking artistry from our most talented creators. Each masterpiece captures the essence of beauty, 
+              elegance, and artistic excellence in feet photography.
+            </motion.p>
+            
             <motion.div
+              variants={itemVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <Link
                 href="/home"
-                className="group inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 text-base sm:text-lg"
+                className="group relative inline-flex items-center px-8 sm:px-12 py-4 sm:py-5 bg-gradient-to-r from-pink-600 via-rose-500 to-pink-700 text-white font-bold rounded-full shadow-2xl hover:shadow-pink-500/50 transform hover:-translate-y-3 transition-all duration-500 text-lg sm:text-xl overflow-hidden"
               >
-                <span>Explore Full Gallery</span>
+                <span className="relative z-10">Explore Full Gallery</span>
                 <motion.span 
-                  className="ml-3 group-hover:translate-x-1 transition-transform duration-300"
-                  animate={{ x: [0, 4, 0] }}
+                  className="ml-4 group-hover:translate-x-2 transition-transform duration-300 relative z-10"
+                  animate={{ x: [0, 5, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  →
+                  ✨
                 </motion.span>
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-700 via-rose-600 to-pink-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </Link>
             </motion.div>
-          </motion.div>
+                    </motion.div>
 
-          {/* Posts Grid */}
+
+
+          {/* Enhanced Posts Grid */}
           {loading ? (
             <motion.div 
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10"
               variants={containerVariants}
             >
-              {[...Array(8)].map((_, i) => (
-                <motion.div key={i} className="animate-pulse" variants={itemVariants}>
-                  <div className="bg-gradient-to-br from-pink-100 to-rose-200 aspect-square rounded-2xl sm:rounded-3xl mb-4"></div>
-                  <div className="bg-gradient-to-r from-pink-100 to-rose-100 h-4 rounded-lg mb-2"></div>
-                  <div className="bg-gradient-to-r from-pink-100 to-rose-100 h-3 rounded-lg w-3/4"></div>
-                </motion.div>
-              ))}
-            </motion.div>
-          ) : error ? (
-            <motion.div className="text-center py-12" variants={itemVariants}>
-              <p className="text-gray-500">{error}</p>
-            </motion.div>
-          ) : posts.length > 0 ? (
-            <motion.div 
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
-              variants={containerVariants}
-            >
-              {posts.map((post) => (
-                <motion.div
-                  key={post.id}
-                  variants={itemVariants}
-                  whileHover={{ y: -12, scale: 1.03 }}
-                  transition={{ duration: 0.4, ease: [0.4, 0.0, 0.2, 1] }}
+              {[...Array(6)].map((_, i) => (
+                <motion.div 
+                  key={i} 
+                  className="animate-pulse group"
+                  variants={galleryItemVariants}
+                  style={{ perspective: "1000px" }}
                 >
-                  <div className="group bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-pink-200/50 hover:border-pink-300">
-                    <Link href={`/post/${post.id}`} className="block">
-                      <div className="aspect-square relative overflow-hidden">
-                        <Image
-                          src={post.imageUrl}
-                          alt={post.title}
-                          fill
-                          className="object-cover group-hover:scale-125 transition-transform duration-700 ease-out"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        
-                        {/* Creator badge */}
-                        <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <Link 
-                            href={`/user/${post.author.username}`}
-                            className="bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 hover:bg-white transition-colors duration-300"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <span className="text-sm font-semibold text-gray-800">@{post.author.username}</span>
-                          </Link>
-                        </div>
-                      </div>
-                    </Link>
-                    
-                    <div className="p-6">
-                      <Link href={`/post/${post.id}`}>
-                        <h3 className="font-bold text-gray-900 mb-4 line-clamp-2 group-hover:text-pink-600 transition-colors duration-300 text-lg leading-tight">{post.title}</h3>
-                      </Link>
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <motion.button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleUpvote(post.id);
-                            }}
-                            disabled={!session || session.user.type !== 'user' || session.user.id === post.author.id}
-                            className={`flex items-center px-3 py-1.5 rounded-full border transition-all duration-300 shadow-lg hover:shadow-xl ${
-                              post.hasUpvoted
-                                ? 'bg-gradient-to-r from-pink-500 to-rose-600 text-white border-pink-500'
-                                : 'bg-gradient-to-r from-pink-50 to-rose-50 text-pink-700 border-pink-200 hover:bg-gradient-to-r hover:from-pink-100 hover:to-rose-100'
-                            } ${
-                              !session || session.user.type !== 'user' || session.user.id === post.author.id
-                                ? 'opacity-50 cursor-not-allowed'
-                                : 'cursor-pointer'
-                            }`}
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <svg 
-                              className={`w-4 h-4 mr-1.5 ${post.hasUpvoted ? 'fill-current' : ''}`} 
-                              fill={post.hasUpvoted ? 'currentColor' : 'none'} 
-                              stroke="currentColor" 
-                              viewBox="0 0 24 24"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                            <span className="font-semibold">{post.upvotesCount}</span>
-                          </motion.button>
-                          
-                          <Link 
-                            href={`/post/${post.id}#comments`}
-                            className="flex items-center bg-gradient-to-r from-rose-50 to-pink-50 px-3 py-1.5 rounded-full border border-rose-200 hover:bg-gradient-to-r hover:from-rose-100 hover:to-pink-100 transition-all duration-300 shadow-lg hover:shadow-xl"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <svg className="w-4 h-4 mr-1.5 text-rose-600" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
-                            </svg>
-                            <span className="font-semibold text-rose-700">{post.commentsCount}</span>
-                          </Link>
-                        </div>
-                        
-                        <div className="text-xs text-gray-500 font-medium bg-gray-50 px-2 py-1 rounded-lg">
-                          {new Date(post.createdAt).toLocaleDateString()}
-                        </div>
+                  <div className="relative">
+                    <div className="bg-gradient-to-br from-pink-100 via-rose-200 to-pink-300 aspect-[4/5] rounded-3xl mb-6 shadow-2xl"></div>
+                    <div className="space-y-3">
+                      <div className="bg-gradient-to-r from-pink-100 to-rose-100 h-6 rounded-xl"></div>
+                      <div className="bg-gradient-to-r from-pink-100 to-rose-100 h-4 rounded-lg w-3/4"></div>
+                      <div className="flex space-x-3">
+                        <div className="bg-gradient-to-r from-pink-100 to-rose-100 h-10 w-20 rounded-full"></div>
+                        <div className="bg-gradient-to-r from-pink-100 to-rose-100 h-10 w-16 rounded-full"></div>
                       </div>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </motion.div>
+          ) : error ? (
+            <motion.div className="text-center py-16" variants={itemVariants}>
+              <motion.div
+                className="w-24 h-24 bg-gradient-to-br from-pink-200 to-rose-300 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
+                animate={{ 
+                  rotate: [0, 360],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ 
+                  rotate: { duration: 10, repeat: Infinity, ease: "linear" },
+                  scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                }}
+              >
+                <svg className="w-12 h-12 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </motion.div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Oops! Something went wrong</h3>
+              <p className="text-gray-600 text-lg">{error}</p>
+            </motion.div>
+          ) : posts.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {posts.map((post) => (
+                <div
+                  key={post.id}
+                  className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-pink-100 hover:border-pink-300"
+                >
+                  <Link href={`/post/${post.id}`} className="block">
+                    <div className="aspect-square relative overflow-hidden">
+                      <Image
+                        src={post.imageUrl}
+                        alt={post.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      {/* Creator badge */}
+                      <div className="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
+                          <span className="text-xs font-semibold text-gray-800">@{post.author.username}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                  
+                  <div className="p-4">
+                    <Link href={`/post/${post.id}`}>
+                      <h3 className="font-semibold text-gray-900 mb-3 line-clamp-2 hover:text-pink-600 transition-colors duration-300">
+                        {post.title}
+                      </h3>
+                    </Link>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleUpvote(post.id);
+                          }}
+                          disabled={!session || session.user.type !== 'user' || session.user.id === post.author.id}
+                          className={`flex items-center px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                            post.hasUpvoted
+                              ? 'bg-pink-500 text-white'
+                              : 'bg-pink-50 text-pink-700 hover:bg-pink-100'
+                          } ${
+                            !session || session.user.type !== 'user' || session.user.id === post.author.id
+                              ? 'opacity-50 cursor-not-allowed'
+                              : 'cursor-pointer'
+                          }`}
+                        >
+                          <svg 
+                            className={`w-4 h-4 mr-1 ${post.hasUpvoted ? 'fill-current' : ''}`} 
+                            fill={post.hasUpvoted ? 'currentColor' : 'none'} 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                          </svg>
+                          {post.upvotesCount}
+                        </button>
+                        
+                        <Link 
+                          href={`/post/${post.id}#comments`}
+                          className="flex items-center px-3 py-1.5 rounded-full bg-gray-50 text-gray-700 hover:bg-gray-100 transition-colors duration-200 text-sm font-medium"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <svg className="w-4 h-4 mr-1 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
+                          </svg>
+                          {post.commentsCount}
+                        </Link>
+                      </div>
+                      
+                      <span className="text-xs text-gray-500">
+                        {new Date(post.createdAt).toLocaleDateString('en-US', { 
+                          month: 'short', 
+                          day: 'numeric'
+                        })}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : (
             <motion.div className="text-center py-16" variants={itemVariants}>
               <div className="max-w-lg mx-auto">

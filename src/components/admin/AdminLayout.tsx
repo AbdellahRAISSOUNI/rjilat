@@ -161,7 +161,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   );
 }
 
-function SidebarContent({ navigation, pathname }: { navigation: any[], pathname: string }) {
+interface NavigationItem {
+  name: string;
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+function SidebarContent({ navigation, pathname }: { navigation: NavigationItem[], pathname: string }) {
   return (
     <div className="flex-1 flex flex-col min-h-0 bg-gray-800">
       <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">

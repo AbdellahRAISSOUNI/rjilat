@@ -19,7 +19,7 @@ export default function AdminUsers() {
   const [loading, setLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'username' | 'posts'>('newest');
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'followers' | 'posts'>('newest');
 
   useEffect(() => {
     fetchUsers();
@@ -74,8 +74,8 @@ export default function AdminUsers() {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       case 'oldest':
         return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-      case 'username':
-        return a.username.localeCompare(b.username);
+      case 'followers':
+        return b.followers - a.followers;
       case 'posts':
         return b.postsCount - a.postsCount;
       default:
@@ -187,7 +187,7 @@ export default function AdminUsers() {
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
-                <option value="username">Username A-Z</option>
+                <option value="followers">Most Followers</option>
                 <option value="posts">Most Posts</option>
               </select>
             </div>

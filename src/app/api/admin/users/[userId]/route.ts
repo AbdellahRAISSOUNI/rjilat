@@ -6,9 +6,9 @@ import Post from '@/models/Post';
 import Comment from '@/models/Comment';
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     userId: string;
-  };
+  }>;
 }
 
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
@@ -21,7 +21,7 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
 
     await dbConnect();
 
-    const { userId } = params;
+    const { userId } = await params;
 
     // Check if user exists
     const user = await User.findById(userId);
@@ -90,7 +90,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 
     await dbConnect();
 
-    const { userId } = params;
+    const { userId } = await params;
 
     // Get user details
     const user = await User.findById(userId)

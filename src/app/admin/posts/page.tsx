@@ -24,7 +24,7 @@ export default function AdminPosts() {
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'popular' | 'title'>('newest');
-  const [filterBy, setFilterBy] = useState<'all' | 'public' | 'private'>('all');
+  const [filterBy, setFilterBy] = useState<'all' | 'public' | 'hidden'>('all');
 
   useEffect(() => {
     fetchPosts();
@@ -93,9 +93,9 @@ export default function AdminPosts() {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          post.author.username.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesFilter = filterBy === 'all' || 
+        const matchesFilter = filterBy === 'all' ||
                          (filterBy === 'public' && post.isPublic) ||
-                         (filterBy === 'private' && !post.isPublic);
+                         (filterBy === 'hidden' && !post.isPublic);
     
     return matchesSearch && matchesFilter;
   });
@@ -218,7 +218,7 @@ export default function AdminPosts() {
               >
                 <option value="all">All Posts</option>
                 <option value="public">Public Only</option>
-                <option value="private">Private Only</option>
+                <option value="hidden">Hidden Only</option>
               </select>
               <select
                 value={sortBy}
